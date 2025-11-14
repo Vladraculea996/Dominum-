@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librería BDSM - Dominium</title>
+    <style>
+        /* PALETA 60-30-10 */
+        :root {
+            --negro-60: #1a1a1a;      /* 60% - Fondo principal */
+            --rojo-30: #c62828;       /* 30% - Acentos y botones */
+            --blanco-10: #f5f5f5;     /* 10% - Texto y elementos */
+            --gris-oscuro: #2d2d2d;   /* Variante negro */
+            --rojo-oscuro: #b71c1c;   /* Variante rojo */
+        }
+
+        /* ESTILOS BASE */
+        body {
+            background-color: var(--negro-60);
+            color: var(--blanco-10);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* NAVEGACIÓN - 30% ROJO */
+        nav {
+            background: var(--rojo-30);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        nav a {
+            color: var(--blanco-10);
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .catalogo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER - 10% BLANCO destacado */
+        .catalogo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--gris-oscuro);
+            border-radius: 10px;
+            border: 2px solid var(--rojo-30);
+        }
+
+        .catalogo-header h1 {
+            color: var(--blanco-10);
+            margin: 0 0 15px 0;
+            font-size: 2.5em;
+        }
+
+        .advertencia {
+            background: var(--rojo-oscuro);
+            color: var(--blanco-10);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            border-left: 4px solid var(--blanco-10);
+        }
+
+        /* FILTROS - 30% ROJO en elementos interactivos */
+        .filtros {
+            background: var(--gris-oscuro);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filtro-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .filtro-grupo input, 
+        .filtro-grupo select {
+            padding: 12px 15px;
+            background: var(--negro-60);
+            color: var(--blanco-10);
+            border: 2px solid var(--rojo-30);
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .filtro-grupo input::placeholder {
+            color: #aaa;
+        }
+
+        /* GRID DE LIBROS - 60% NEGRO base */
+        .grid-libros {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        /* TARJETAS DE LIBRO - 30% ROJO en detalles */
+        .libro-card {
+            background: var(--gris-oscuro);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .libro-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--rojo-30);
+            box-shadow: 0 10px 25px rgba(198, 40, 40, 0.2);
+        }
+
+        .libro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--rojo-30);
+        }
+
+        .libro-titulo {
+            color: var(--blanco-10);
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .libro-autor {
+            color: var(--rojo-30); /* 30% rojo para autor */
+            font-size: 1em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .libro-descripcion {
+            color: #ccc; /* Gris claro para descripción */
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* TAGS - 30% ROJO en elementos pequeños */
+        .libro-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: var(--rojo-30);
+            color: var(--blanco-10);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* BADGES DE CATEGORÍA Y NIVEL */
+        .libro-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .categoria-badge, .nivel-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .categoria-badge {
+            background: var(--rojo-30);
+            color: var(--blanco-10);
+        }
+
+        .nivel-badge {
+            background: var(--blanco-10);
+            color: var(--negro-60);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .catalogo-container {
+                padding: 15px;
+            }
+            
+            .grid-libros {
+                grid-template-columns: 1fr;
+            }
+            
+            .filtro-grupo {
+                flex-direction: column;
+            }
+            
+            nav {
+                text-align: center;
+            }
+            
+            nav a {
+                display: inline-block;
+                margin: 5px 10px;
+            }
+        }
+
+        /* ESTADO VACÍO */
+        .estado-vacio {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav>
+        <a href="index.html">🏠 Inicio</a>
+        <a href="catalogo.html">📚 Librería BDSM</a>
+        <a href="#">👤 Comunidad</a>
+        <a href="#">🎓 Cursos</a>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="catalogo-container">
+        <!-- HEADER CON ADVERTENCIA -->
+        <section class="catalogo-header">
+            <h1>📖 Biblioteca BDSM</h1>
+            <p class="advertencia">
+                🔞 Contenido exclusivo para mayores de 18 años - 
+                Enfoque educativo, seguro y consensuado
+            </p>
+        </section>
+
+        <!-- FILTROS -->
+        <section class="filtros">
+            <div class="filtro-grupo">
+                <input type="text" id="buscador" placeholder="🔍 Buscar por título, autor o tema...">
+                
+                <select id="categoria">
+                    <option value="todas">📂 Todas las categorías</option>
+                    <option value="seguridad">🛡️ Seguridad y Consenso</option>
+                    <option value="tecnicas">🎯 Técnicas y Prácticas</option>
+                    <option value="psicologia">🧠 Psicología y Dinámicas</option>
+                    <option value="comunidad">👥 Comunidad y Cultura</option>
+                </select>
+                
+                <select id="nivel">
+                    <option value="todos">🎓 Todos los niveles</option>
+                    <option value="principiante">🌱 Principiante</option>
+                    <option value="intermedio">⚡ Intermedio</option>
+                    <option value="avanzado">🔥 Avanzado</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- GRID DE LIBROS -->
+        <section class="grid-libros" id="grid-libros">
+            <!-- Los libros se cargarán aquí dinámicamente -->
+        </section>
+    </main>
+
+    <script>
+        // DATOS DE EJEMPLO - LIBROS BDSM
+        const libros = [
+            {
+                id: 1,
+                titulo: "Consenso y Límites: La Base del BDSM Seguro",
+                autor: "Dra. Elena Morales",
+                categoria: "seguridad",
+                nivel: "principiante",
+                descripcion: "Guía fundamental sobre comunicación, establecimiento de límites y prácticas de consentimiento informado.",
+                tags: ["consenso", "límites", "comunicación", "seguridad", "principiantes"]
+            },
+            {
+                id: 2,
+                titulo: "Shibari: El Arte de las Ataduras Japonesas",
+                autor: "Kaito Yamamoto",
+                categoria: "tecnicas",
+                nivel: "intermedio", 
+                descripcion: "Manual técnico sobre shibari tradicional y moderno, con enfoque en seguridad anatómica.",
+                tags: ["shibari", "kinbaku", "ataduras", "técnicas", "seguridad"]
+            },
+            {
+                id: 3,
+                titulo: "Psicología de las Dinámicas de Poder",
+                autor: "Dr. Robert Chen",
+                categoria: "psicologia",
+                nivel: "avanzado",
+                descripcion: "Análisis profundo de las dinámicas D/s, psychological play y gestión emocional.",
+                tags: ["psicología", "dinámicas", "D/s", "emociones", "avanzado"]
+            },
+            {
+                id: 4,
+                titulo: "Primeros Auxilios en Prácticas BDSM",
+                autor: "Equipo Médico SafePlay",
+                categoria: "seguridad",
+                nivel: "principiante",
+                descripcion: "Protocolos de seguridad y respuesta ante emergencias en escenas de BDSM.",
+                tags: ["primeros auxilios", "seguridad", "emergencias", "salud"]
+            },
+            {
+                id: 5,
+                titulo: "Impact Play: Técnicas y Seguridad",
+                autor: "Maya Rodriguez",
+                categoria: "tecnicas",
+                nivel: "intermedio",
+                descripcion: "Guía completa sobre diferentes implementos, técnicas y zonas seguras para impact play.",
+                tags: ["impact play", "técnicas", "implementos", "seguridad"]
+            },
+            {
+                id: 6,
+                titulo: "Historia y Cultura de la Comunidad BDSM",
+                autor: "Alex Johnson",
+                categoria: "comunidad",
+                nivel: "principiante",
+                descripcion: "Recorrido histórico por la evolución de la comunidad BDSM y sus valores fundamentales.",
+                tags: ["historia", "cultura", "comunidad", "educación"]
+            }
+        ];
+
+        // FUNCIÓN PARA RENDERIZAR LIBROS
+        function renderizarLibros(librosArray) {
+            const grid = document.getElementById('grid-libros');
+            
+            if (librosArray.length === 0) {
+                grid.innerHTML = '<div class="estado-vacio">No se encontraron libros con los filtros aplicados</div>';
+                return;
+            }
+
+            grid.innerHTML = '';
+
+            librosArray.forEach(libro => {
+                const libroHTML = `
+                    <div class="libro-card" data-categoria="${libro.categoria}" data-nivel="${libro.nivel}">
+                        <div class="libro-meta">
+                            <span class="categoria-badge">${obtenerIconoCategoria(libro.categoria)} ${libro.categoria}</span>
+                            <span class="nivel-badge">${obtenerIconoNivel(libro.nivel)} ${libro.nivel}</span>
+                        </div>
+                        
+                        <div class="libro-titulo">${libro.titulo}</div>
+                        <div class="libro-autor">✍️ ${libro.autor}</div>
+                        <div class="libro-descripcion">${libro.descripcion}</div>
+                        
+                        <div class="libro-tags">
+                            ${libro.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += libroHTML;
+            });
+        }
+
+        // FUNCIONES AUXILIARES
+        function obtenerIconoCategoria(categoria) {
+            const iconos = {
+                'seguridad': '🛡️',
+                'tecnicas': '🎯', 
+                'psicologia': '🧠',
+                'comunidad': '👥'
+            };
+            return iconos[categoria] || '📁';
+        }
+
+        function obtenerIconoNivel(nivel) {
+            const iconos = {
+                'principiante': '🌱',
+                'intermedio': '⚡',
+                'avanzado': '🔥'
+            };
+            return iconos[nivel] || '🎓';
+        }
+
+        // FILTRADO DE LIBROS
+        function inicializarFiltros() {
+            const buscador = document.getElementById('buscador');
+            const categoriaSelect = document.getElementById('categoria');
+            const nivelSelect = document.getElementById('nivel');
+
+            function aplicarFiltros() {
+                const texto = buscador.value.toLowerCase();
+                const categoria = categoriaSelect.value;
+                const nivel = nivelSelect.value;
+
+                const librosFiltrados = libros.filter(libro => {
+                    const coincideTexto = libro.titulo.toLowerCase().includes(texto) || 
+                                        libro.autor.toLowerCase().includes(texto) ||
+                                        libro.tags.some(tag => tag.toLowerCase().includes(texto)) ||
+                                        libro.descripcion.toLowerCase().includes(texto);
+                    
+                    const coincideCategoria = categoria === 'todas' || libro.categoria === categoria;
+                    const coincideNivel = nivel === 'todos' || libro.nivel === nivel;
+
+                    return coincideTexto && coincideCategoria && coincideNivel;
+                });
+
+                renderizarLibros(librosFiltrados);
+            }
+
+            buscador.addEventListener('input', aplicarFiltros);
+            categoriaSelect.addEventListener('change', aplicarFiltros);
+            nivelSelect.addEventListener('change', aplicarFiltros);
+        }
+
+        // INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarLibros(libros);
+            inicializarFiltros();
+        });
+    </script>
+</body>
+  </html>
